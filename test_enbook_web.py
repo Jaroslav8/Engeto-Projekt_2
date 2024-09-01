@@ -37,18 +37,18 @@ def test_enbook_search(page):
 def test_log_in(page):
     page.goto("https://www.enbook.sk")
     
-    page.wait_for_selector("#ammenu-header-container > div.header.content > div.dropdownmenu-wrapper > div.action.showmenu", timeout=5000)
-    page.query_selector("#ammenu-header-container > div.header.content > div.dropdownmenu-wrapper > div.action.showmenu").click()
+    page.wait_for_selector('div[data-block="dropdownmenu"]', timeout=5000)
+    page.query_selector('div[data-block="dropdownmenu"]').click()
 
     page.wait_for_selector('input[id="email"]', timeout=5000)
     page.fill('input[id="email"]', "nic@nic.sk")
     page.fill('input[id="pass"]', "heslo")
     page.query_selector("button#send2").click()
 
-    page.wait_for_selector("#maincontent > div.columns > div > div.login-wrapper > div.col.right > div > div > div > div > div > div", timeout=5000)
-    warning_notice = page.locator("#maincontent > div.columns > div > div.login-wrapper > div.col.right > div > div > div > div > div > div")
+    page.wait_for_selector('div[role="alert"]', timeout=5000)
+    warning_notice = page.locator('div[role="alert"]')
     assert warning_notice.inner_text() == "Prihlásenie do konta bolo nesprávne alebo je vaše konto dočasne deaktivované. Počkajte a skúste to neskôr."
-    
+
 
 # 3rd. test - verify if a book is added into the shopping cart
 
@@ -61,7 +61,7 @@ def test_add_to_chart(page):
     
     page.wait_for_selector('input[class="input-text qty activated"]', timeout=5000)
     amount_input = page.locator('input[class="input-text qty activated"]')
-    item_in_cart = page.locator("#shopping-cart-table > tbody > tr > td.col.item > div > strong > a")
+    item_in_cart = page.locator('div[class="product-item-details"]')
     
     assert item_in_cart.inner_text() == "The Teacher"
     assert amount_input.input_value() == "1"
